@@ -23,7 +23,7 @@ FEATURES=`ogrinfo -so $SHPFILE $BASE | grep Feature`
 FEATURES=`echo $FEATURES | awk '{print $3}'`
 echo $FEATURES
 
-# TODO: Run getOSM.sh based on extent
+# Potential TODO: Run getOSM.sh based on extent
 # Alternative: Use HOT Export tool to generate .pbf file
 
 # convert input shapefiles to POLY type
@@ -33,6 +33,7 @@ python scripts/ogr2poly.py -f $3 $1
 # script only saves files in current directory
 
 # loop through each AOI feature and clip the OSM file
+# then output new .osm file with id as filename
 for i in $(eval echo {0..$FEATURES})
 do
    # get feature attribute data for file IDs

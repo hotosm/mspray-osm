@@ -1,6 +1,6 @@
-# mspray-osm
+# omk-osm-prepper
 
-Instructions and scripts to download and process OSM files for mSpray. 
+Instructions and scripts to download and process OSM files for OpenMapKit deployments. This is a simple script that ingests a shapefile to produce a smaller, reduced OSM files for loading onto OpenMapKit.  
 
 ### Inputs: 
 
@@ -20,3 +20,7 @@ Instructions and scripts to download and process OSM files for mSpray.
 3. Run the script: 
 
   `./scripts/processOSM.sh /path/to/shapefile /path/to/osm.pbf AOI_ID OUTPUT_ID`
+
+### Other notes:
+
+Create a `working` folder to house your input OSM and AOI shapefile. This will help keep your input and output data organized. The script places all outputs into the `output` folder.
