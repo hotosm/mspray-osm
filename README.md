@@ -21,6 +21,10 @@ Instructions and scripts to download and process OSM files for OpenMapKit deploy
 
   `./scripts/processOSM.sh /path/to/shapefile /path/to/osm.pbf AOI_ID OUTPUT_ID`
 
+Example: 
+
+  `./scripts/processOSM.sh /working/areas.shp /working/areas_osm.pbf ID ID`
+
 ### Other notes:
 
-Create a `working` folder to house your input OSM and AOI shapefile. This will help keep your input and output data organized. The script places all outputs into the `output` folder.
+Use the `working` folder to house your input OSM and AOI shapefile. This will help keep your input and output data organized. The script places all outputs into the `output` folder.

@@ -5,6 +5,10 @@
 # Assumes input AOI shapefile only contains polygons
 # Assumes you have downloaded OSM data. See getOSM.sh for downloading via Overpass.
 
+# Requirements: 
+#   - osmconvert
+#   - gdal/ogr
+
 # Start with AOI extent and corresponding data from a shapefile
 # Adapted from https://github.com/clhenrick/shell_scripts/blob/master/get-extent.sh
 SHPFILE=$1
@@ -16,9 +20,24 @@ FIELDOUT=$4
 BASE=`basename $SHPFILE .shp`
 EXTENT=`ogrinfo -so $SHPFILE $BASE | grep Extent | sed 's/Extent: //g' | \
    sed 's/(//g' | sed 's/)//g' | sed 's/ - /, /g'`
-EXTENT=`echo $EXTENT | awk -F ',' '{print $2 " " $1 " " $4 " " $3}'`
-echo $EXTENT
+EXTENT=`echo $EXTENT | awk -F ',' '{print $2","$1","$4","$3}'`
 
+# make output dir
+mkdir -p output/$BASE
+
+# remove spaces for manifest.json generation
+# TODO: make this better since we're already using awk above
+BBOX=`echo $EXTENT | sed 's/ //g'`
+echo $BBOX
+# generate manifest.json for OMK deployments
+cat >./output/$BASE/manifest.json <<EOF
+{
+   "description": "Deployment files for area $BASE",
+   "bbox": [$BBOX]
+}
+EOF
+
+# print number of features for debugging
 FEATURES=`ogrinfo -so $SHPFILE $BASE | grep Feature`
 FEATURES=`echo $FEATURES | awk '{print $3}'`
 echo $FEATURES
@@ -46,7 +65,7 @@ do
 
    # uses osmconvert to clip based on .poly border
    # --complete-ways flag keeps polygons that cross the border
-   ~/osmconvert $2 -B=$polyFILE.poly --complete-ways -o=output/$outputID.osm
+   ~/osmconvert $2 -B=$polyFILE.poly --complete-ways -o=output/$BASE/$outputID.osm
 
    # clean up
    rm $polyFILE.poly
